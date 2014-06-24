@@ -1,12 +1,21 @@
+/*			Dual boot for Arduino Due
+	Copyright (C) Xulio Coira, 2014
+	Copyright (C) Alfredo Prado ,2014
+
+	xulioc [at] gmail [dot] com
+	radikalbytes [at] gmail [dot] com
+
+	Firmware based on Arduino Due bootloader (Arduino Ltd.)
+	Firmware based on MIDI shield from openpipe.cc
+	Writen using LUFA library 100807
+*/
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2010.
               
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
-*/
 
-/*
   Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this 
@@ -43,10 +52,6 @@
  		#include <LUFA/Drivers/USB/Class/MIDI.h>
 		#include <LUFA/Drivers/USB/Class/CDC.h>
 		
-	/* Product-specific definitions: */
-		#define ARDUINO_UNO_PID				0x0001
-		#define ARDUINO_DUE_PID				0x003D
-		#define ARDUINO_MEGA2560_PID		0x0010
 
 	/* Macros: */
 		/** Endpoint number of the CDC device-to-host notification IN endpoint. */

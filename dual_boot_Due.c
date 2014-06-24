@@ -1,12 +1,21 @@
+/*			Dual boot for Arduino Due
+	Copyright (C) Xulio Coira, 2014
+	Copyright (C) Alfredo Prado ,2014
+
+	xulioc [at] gmail [dot] com
+	radikalbytes [at] gmail [dot] com
+
+	Firmware based on Arduino Due bootloader (Arduino Ltd.)
+	Firmware based on MIDI shield from openpipe.cc
+	Writen using LUFA library 100807
+*/
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2010.
               
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
-*/
 
-/*
   Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this 
@@ -28,6 +37,7 @@
   this software.
 */
 
+
 /** \file
  *
  *  Main source file for the Arduino-usbserial project. This file contains the main tasks of
@@ -36,8 +46,8 @@
 
 #include "dual_boot_Due.h"
 
- //#define MIDI_BAUDRATE 31250
- #define MIDI_BAUDRATE 115200
+#define MIDI_BAUDRATE 31250
+ //#define MIDI_BAUDRATE 115200
  //#define MIDI_BAUDRATE 500000
  //#define MIDI_BAUDRATE 1000000
 
@@ -137,22 +147,18 @@ void setResetPin(bool v) {
 		/* ACTIVE   => OUTPUT LOW (0v on target /RESET) */
 		AVR_RESET_LINE_DDR  |= AVR_RESET_LINE_MASK;
 		AVR_RESET_LINE_PORT &= ~AVR_RESET_LINE_MASK;
-		//LEDs_TurnOnLEDs(LEDMASK_RX);
 	} else {
 	 	/* INACTIVE => set as INPUT (internal pullup on target /RESET keep it at 3.3v) */
 		AVR_RESET_LINE_DDR  &= ~AVR_RESET_LINE_MASK;
 		AVR_RESET_LINE_PORT &= ~AVR_RESET_LINE_MASK;
-		//LEDs_TurnOffLEDs(LEDMASK_RX);
 	}
 }
 
 void setErasePin(bool v) {
 	if (v) {
 		AVR_ERASE_LINE_PORT &= ~AVR_ERASE_LINE_MASK;
-		//LEDs_TurnOnLEDs(LEDMASK_TX);
 	} else {
 		AVR_ERASE_LINE_PORT |= AVR_ERASE_LINE_MASK;
-		//LEDs_TurnOffLEDs(LEDMASK_TX);
 	}
 }
 
@@ -198,8 +204,6 @@ int main(void)
 			wdt_reset();
 			if (Serial_IsCharReceived()){
 				tmp = Serial_RxByte();
-			//if (!RingBuffer_IsEmpty(&USARTtoUSB_Buffer)){
-			//	tmp=RingBuffer_Remove(&USARTtoUSB_Buffer);					
 				if (tmp<0x80){
 				//RUNNING STATUS
 				// http://www.blitter.com/~russtopia/MIDI/~jglatt/tech/midispec/run.htm
@@ -211,7 +215,6 @@ int main(void)
 				status=received;
 				rs=0;
 				}
-				//received = Serial_RxByte();
 				command = (uint8_t)received & 0xF0;
 				channel = (uint8_t)received & 0x0F;
 
@@ -224,9 +227,7 @@ int main(void)
 					data1=tmp;
 				}else{
 					while( !Serial_IsCharReceived() );
-					//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
 					data1 = (uint8_t)Serial_RxByte();
-					//data1=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
 				}
 				USB_MIDI_Send_Command(channel, command, data1, 0);
 				break;
@@ -241,14 +242,10 @@ int main(void)
 					data1=tmp;
 				}else{
 					while( !Serial_IsCharReceived() );
-					//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
 					data1 = (uint8_t)Serial_RxByte();
-					//data1=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
 				}
 				while( !Serial_IsCharReceived() );
-				//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
 				data2 = (uint8_t)Serial_RxByte();
-				//data2=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
 				USB_MIDI_Send_Command(channel, command, data1, data2);
 				break;
 
@@ -266,31 +263,18 @@ int main(void)
 					//MIDI Time Code Quarter Frame
 					//Song Select
 					while( !Serial_IsCharReceived() );
-					//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
 					data1 = (uint8_t)Serial_RxByte();
-					//data1=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
 					USB_MIDI_Send_Command(channel, command, data1, 0);
 				}else if ( channel==2 ){
 					//Song Position Pointer
-
-					
 					while( !Serial_IsCharReceived() );
 					data1 = (uint8_t)Serial_RxByte();
 					while( !Serial_IsCharReceived() );
 					data2 = (uint8_t)Serial_RxByte();
-					
-					//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
-					//data1 = (uint8_t)Serial_RxByte();
-					//data1=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
-					//while (RingBuffer_IsEmpty(&USARTtoUSB_Buffer));
-					//data1 = (uint8_t)Serial_RxByte();
-					//data2=(uint8_t)RingBuffer_Remove(&USARTtoUSB_Buffer);
-
 					USB_MIDI_Send_Command(channel, command, data1, data2);
 				}
 				break;
 				default:
-					//while(0);
 					USB_MIDI_Send_Command(0, 0x80, received, 0);
 					USB_MIDI_Send_Command(0, 0x80, data1, 0);
 					USB_MIDI_Send_Command(0, 0x80, data2, 0);
@@ -448,10 +432,6 @@ void SetupHardware(void)
 
 		mode=MODE_SERIAL;
 	 	setResetPin(false);
-
-		/* Target /ERASE line is active HIGH: there is a mosfet that inverts logic */
-		//AVR_ERASE_LINE_PORT |= AVR_ERASE_LINE_MASK;
-		//AVR_ERASE_LINE_DDR  |= AVR_ERASE_LINE_MASK;	
 		/* Hardware Initialization */
 		Serial_Init(9600, false);
 		LEDs_Init();

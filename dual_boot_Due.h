@@ -15,9 +15,7 @@
               
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
-*/
 
-/*
   Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this 
@@ -41,11 +39,11 @@
 
 /** \file
  *
- *  Header file for Arduino-usbserial.c.
+ *  Header file for dual_boot_Due.c.
  */
 
-#ifndef _ARDUINO_USBSERIAL_H_
-#define _ARDUINO_USBSERIAL_H_
+#ifndef _DUAL_BOOT_DUE_H_
+#define _DUAL_BOOT_DUE_H_
 
 	/* Includes: */
 		#include <avr/io.h>
@@ -63,22 +61,21 @@
 		#include <LUFA/Drivers/Board/LEDs.h>
 		#include <LUFA/Drivers/Peripheral/Serial.h>
 		#include <LUFA/Drivers/USB/USB.h>
- 		//#include <LUFA/Drivers/Peripheral/ADC.h>
 		#include <LUFA/Drivers/USB/Class/CDC.h>
  		#include <LUFA/Drivers/USB/Class/MIDI.h>
 		
-	/* Macros: */
+			/* Macros: */
 		/** LED mask for the library LED driver, to indicate TX activity. */
 		#define LEDMASK_TX               LEDS_LED1
 
 		/** LED mask for the library LED driver, to indicate RX activity. */
 		#define LEDMASK_RX               LEDS_LED2
-		
+
 		/** LED mask for the library LED driver, to indicate that an error has occurred in the USB interface. */
 		#define LEDMASK_ERROR            (LEDS_LED1 | LEDS_LED2)
-		
+
 		/** LED mask for the library LED driver, to indicate that the USB interface is busy. */
-		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)		
+		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)	
 		
 		/** Type define for a USB MIDI event packet, used to encapsulate sent and received MIDI messages from a USB MIDI interface. */
 		typedef struct
@@ -102,4 +99,4 @@
 		void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);
 		void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);		
 
-#endif /* _ARDUINO_USBSERIAL_H_ */
+#endif /* _DUAL_BOOT_DUE_H_ */
