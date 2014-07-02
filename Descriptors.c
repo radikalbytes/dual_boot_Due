@@ -45,6 +45,11 @@
  */
 
 #include "Descriptors.h"
+ //You need put your own PID/VID or get any under your responsability
+#define VID_CDC 0xFFFF
+#define PID_CDC 0xFFFF
+#define VID_MIDI 0xFFFF
+#define PID_MIDI 0xFFFF
 
 extern int mode;
 /* On some devices, there is a factory set internal serial number which can be automatically sent to the host as
@@ -77,8 +82,8 @@ const USB_Descriptor_Device_t PROGMEM SERIALDeviceDescriptor =
 				
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 		
-	.VendorID               = 0x2341, // Arduino
-	.ProductID          	= 0x003D, // Arduino Due on board USB2Serial
+	.VendorID               = VID_CDC, 
+	.ProductID          	= PID_CDC, // Arduino Due on board USB2Serial
 
 	.ReleaseNumber          = 0x0001,
 		
@@ -101,8 +106,8 @@ const USB_Descriptor_Device_t PROGMEM MIDIDeviceDescriptor =
 				
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 		
-	.VendorID               = 0x03EB,
-	.ProductID              = 0x2048,
+	.VendorID               = VID_MIDI,
+	.ProductID              = PID_MIDI,
 	.ReleaseNumber          = 0x0000,
 		
 	.ManufacturerStrIndex   = 0x01,

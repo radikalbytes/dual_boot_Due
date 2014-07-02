@@ -56,7 +56,11 @@ This is a simple test with the MIDI library v4.2:
 	  }
 	}
 
+##PID/VID USB
 
+You need add your PID/VID for each device at lines 49-52 in Descriptors.c
+
+We are trying provide free PID/VID from openmoko, but at this moment we don't have response from they.
 
 ##SO compatibility
 Desktop: It works with Windows XP, Win 7, Win 8(not yet tested), OSX (from Lion to Mavericks), Linux.
